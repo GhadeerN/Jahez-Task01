@@ -6,6 +6,6 @@ import kotlinx.coroutines.flow.SharedFlow
 import sa.edu.tuwaiq.jaheztask01.common.State
 
 interface FirebaseRepository {
-    fun login(email: String, password: String): Task<AuthResult>
+    suspend fun login(email: String, password: String): Task<AuthResult>
 
 }

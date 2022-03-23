@@ -47,6 +47,7 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.loginButton.setOnClickListener {
+            Log.d(TAG, "login clicked")
             logIn()
         }
     }
@@ -56,14 +57,18 @@ class LoginFragment : Fragment() {
         password = binding.loginPassword.text.toString()
 
         if (email.isNotBlank() && password.isNotBlank()) {
-            lifecycleScope.launchWhenStarted {
+            Log.d(TAG, "login: $email, $password")
+            viewModel.login(email, password)
+            lifecycleScope.launch {
                 viewModel.loginState.collect { state ->
+                    Log.d(TAG, "state: $state")
                     when {
                         state.isLoading -> {
                             Log.d(TAG, "is loading")
                         }
                         state.isSuccess -> {
                             Log.d(TAG, "login success")
+                            findNavController().navigate(R.id.action_loginFragment_to_resturantListFragment)
                         }
                         state.error.isNotBlank() -> {
                             Toast.makeText(requireActivity(), state.error, Toast.LENGTH_SHORT).show()

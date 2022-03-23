@@ -6,8 +6,10 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.navigation.ui.setupActionBarWithNavController
+import dagger.hilt.android.AndroidEntryPoint
 import sa.edu.tuwaiq.jaheztask01.R
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     // For the action bar
