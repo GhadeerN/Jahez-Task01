@@ -10,4 +10,5 @@ data class RestaurantItem(
     val name: String,
     val rating: Double,
     val id: Int,
+    val offer: String
 )

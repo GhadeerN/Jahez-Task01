@@ -10,4 +10,6 @@
     <string name="register_full_name">Full Name</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="question_already_have_account">Already Have Account?</string>
+    <string name="offer_placeholder">9 SAR Delivery</string>
+    <string name="restaurant_logo_image">Restaurat logo image</string>
 </resources>

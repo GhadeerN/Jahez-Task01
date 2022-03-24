@@ -20,7 +20,9 @@ data class RestaurantItemDto(
     @SerializedName("name")
     val name: String,
     @SerializedName("rating")
-    val rating: Double
+    val rating: Double,
+    @SerializedName("offer")
+    val offer: String
 )
 
 // This function is to convert the CoinDto (comes from api) to Coin object (used for UI)
@@ -32,6 +34,7 @@ fun RestaurantItemDto.toRestaurantItem(): RestaurantItem {
         hours = hours,
         image = image,
         rating = rating,
-        name = name
+        name = name,
+        offer = offer
     )
 }
