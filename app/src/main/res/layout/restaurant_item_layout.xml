@@ -30,18 +30,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:contentDescription="@string/restaurant_logo_image"
-                android:scaleType="centerCrop"
+                android:scaleType="fitCenter"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <LinearLayout
                 android:id="@+id/offerLayout"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="-15dp"
                 android:background="@color/cobalt_blue"
                 android:orientation="horizontal"
                 android:padding="6dp"
-                android:visibility="@{restaurant.hasOffer ? View.GONE : View.VISIBLE}">
+                android:visibility="@{restaurant.hasOffer ? View.VISIBLE : View.GONE}">
 
                 <ImageView
                     android:id="@+id/imageView3"
@@ -55,7 +55,7 @@
                     android:id="@+id/offerText_item"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text='@{restaurant.hasOffer ? restaurant.offer[0] + " SAR Delivery" : ""}'
+                    android:text='@{restaurant.offer + " SAR Delivery"}'
                     android:textColor="@color/white" />
             </LinearLayout>
 

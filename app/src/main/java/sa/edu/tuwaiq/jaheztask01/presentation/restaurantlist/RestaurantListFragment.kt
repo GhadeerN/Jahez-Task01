@@ -22,6 +22,7 @@ class RestaurantListFragment : Fragment() {
 
     private val viewModel: RestaurantListViewModel by activityViewModels()
     private lateinit var binding: RestaurantListFragmentBinding
+    private lateinit var restaurantListAdapter: RestaurantListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,6 +34,8 @@ class RestaurantListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        restaurantListAdapter = RestaurantListAdapter()
+        binding.resturantsRecyclerView.adapter = restaurantListAdapter
         getRestaurantList()
     }
 
@@ -43,11 +46,15 @@ class RestaurantListFragment : Fragment() {
                 when {
                     state.isLoading -> {
                         Log.d(TAG, "Loading..")
+                        binding.restaurantListProgressBar.visibility = View.VISIBLE
                     }
                     state.restaurants.isNotEmpty() -> {
                         Log.d(TAG, "list: ${state.restaurants}")
+                        binding.restaurantListProgressBar.visibility = View.GONE
+                        restaurantListAdapter.submitList(state.restaurants)
                     }
                     state.error.isNotBlank() -> {
+                        binding.restaurantListProgressBar.visibility = View.GONE
                         Log.d(TAG, "error: ${state.error}")
                     }
                 }
