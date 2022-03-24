@@ -10,12 +10,11 @@
         android:name="sa.edu.tuwaiq.jaheztask01.presentation.login.LoginFragment"
         android:label="LoginFragment" >
         <action
-            android:id="@+id/action_loginFragment_to_resturantListFragment"
-            app:destination="@id/resturantListFragment" />
+            android:id="@+id/action_loginFragment_to_restaurantListFragment"
+            app:destination="@id/restaurantListFragment" />
     </fragment>
     <fragment
-        android:id="@+id/resturantListFragment"
-        android:name="sa.edu.tuwaiq.jaheztask01.presentation.restaurantlist.ResturantListFragment"
-        android:label="resturant_list_fragment"
-        tools:layout="@layout/resturant_list_fragment" />
+        android:id="@+id/restaurantListFragment"
+        android:name="sa.edu.tuwaiq.jaheztask01.presentation.restaurantlist.RestaurantListFragment"
+        android:label="RestaurantListFragment" />
 </navigation>

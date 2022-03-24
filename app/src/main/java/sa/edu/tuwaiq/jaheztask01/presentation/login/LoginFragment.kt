@@ -74,7 +74,7 @@ class LoginFragment : Fragment() {
                         state.isSuccess -> {
                             Log.d(TAG, "login success")
                             binding.progressBar.visibility = View.GONE
-                            findNavController().navigate(R.id.action_loginFragment_to_resturantListFragment)
+                            findNavController().navigate(R.id.action_loginFragment_to_restaurantListFragment)
                         }
                         state.error.isNotBlank() -> {
                             binding.progressBar.visibility = View.GONE

@@ -7,5 +7,5 @@ import sa.edu.tuwaiq.jaheztask01.common.State
 
 interface FirebaseRepository {
     suspend fun login(email: String, password: String): Task<AuthResult>
-
+    
 }
