@@ -5,6 +5,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import sa.edu.tuwaiq.jaheztask01.common.util.InputFieldValidation
 import sa.edu.tuwaiq.jaheztask01.data.repositoryimp.FirebaseRepositoryImp
 import sa.edu.tuwaiq.jaheztask01.domain.repository.FirebaseRepository
 import javax.inject.Singleton

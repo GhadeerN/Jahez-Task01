@@ -5,4 +5,6 @@
     <string name="login">Login</string>
     <string name="question_dont_have_account">Don\'t Have Account?</string>
     <string name="signup">Sign Up</string>
+    <string name="require">Require</string>
+    <string name="wrong_email_format">Wrong email format! e.g., plant@planteye.com</string>
 </resources>
