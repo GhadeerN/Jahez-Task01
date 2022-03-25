@@ -54,6 +54,7 @@ class RestaurantListAdapter :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: RestaurantItem) {
             binding.restaurant = item
+            binding.offer = if (item.hasOffer) item.offer?.get(0).toString() else ""
             Glide.with(HungerZoneApplication.appContext).load(item.image)
                 .into(binding.restaurantImageItem)
             binding.executePendingBindings()

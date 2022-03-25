@@ -11,6 +11,10 @@
         <variable
             name="restaurant"
             type="sa.edu.tuwaiq.jaheztask01.domain.model.RestaurantItem" />
+
+        <variable
+            name="offer"
+            type="String" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -51,11 +55,13 @@
                     app:srcCompat="@drawable/ic_baseline_local_offer_24"
                     app:tint="@color/white" />
 
+                <!-- android:text='@{restaurant.offer + " SAR Delivery"}'-->
+
                 <TextView
                     android:id="@+id/offerText_item"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text='@{restaurant.offer + " SAR Delivery"}'
+                    android:text='@{offer + " SAR Delivery"}'
                     android:textColor="@color/white" />
             </LinearLayout>
 
