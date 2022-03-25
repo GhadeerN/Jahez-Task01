@@ -4,10 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import sa.edu.tuwaiq.jaheztask01.common.State
 import sa.edu.tuwaiq.jaheztask01.domain.usecase.GetRestaurantsUseCase
@@ -24,8 +21,8 @@ class RestaurantListViewModel @Inject constructor(
     //TODO for test
     private val signOutUseCase: SignOutUseCase
 ) : ViewModel() {
-    private val _restaurantsState = MutableSharedFlow<RestaurantState>()
-    val restaurantsState = _restaurantsState.asSharedFlow()
+    private val _restaurantsState = MutableStateFlow(RestaurantState())
+    val restaurantsState = _restaurantsState.asStateFlow()
 
     init {
         getRestaurantList()
@@ -36,13 +33,13 @@ class RestaurantListViewModel @Inject constructor(
                 getRestaurantsUseCase.invoke().onEach { result ->
                     when(result) {
                         is State.Success -> {
-                            _restaurantsState.emit(RestaurantState(restaurants = result.data ?: emptyList()))
+                            _restaurantsState.value = RestaurantState(restaurants = result.data ?: emptyList())
                         }
                         is State.Loading -> {
-                            _restaurantsState.emit(RestaurantState(isLoading = true))
+                            _restaurantsState.value = RestaurantState(isLoading = true)
                         }
                         is State.Error -> {
-                            _restaurantsState.emit(RestaurantState(error = result.message ?: "Unexpected error occurred!"))
+                            _restaurantsState.value = RestaurantState(error = result.message ?: "Unexpected error occurred!")
                         }
                     }
                 }.launchIn(viewModelScope)
