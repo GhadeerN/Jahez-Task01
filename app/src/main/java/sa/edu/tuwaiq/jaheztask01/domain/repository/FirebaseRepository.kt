@@ -5,4 +5,6 @@ import com.google.firebase.auth.AuthResult
 
 interface FirebaseRepository {
     suspend fun login(email: String, password: String): AuthResult
+
+    suspend fun signup(name: String, email: String, password: String): AuthResult
 }

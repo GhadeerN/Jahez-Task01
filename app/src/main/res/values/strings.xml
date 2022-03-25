@@ -12,4 +12,5 @@
     <string name="question_already_have_account">Already Have Account?</string>
     <string name="offer_placeholder">9 SAR Delivery</string>
     <string name="restaurant_logo_image">Restaurat logo image</string>
+    <string name="password_format">Password most contains:\n- At least 8 characters\n- At         least one uppercase and lowercase letter\n- At least one number digit</string>
 </resources>
