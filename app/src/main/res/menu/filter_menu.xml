@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/all_filter"
+        android:title="@string/offers" />
+    <item
+        android:id="@+id/rate_filter"
+        android:title="@string/rating" />
+    <item
+        android:id="@+id/distance_filter"
+        android:title="@string/distance" />
+</menu>
