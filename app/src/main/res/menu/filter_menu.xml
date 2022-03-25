@@ -17,4 +17,8 @@
         android:title="@string/search"
         app:showAsAction="always|collapseActionView"
         app:actionViewClass="androidx.appcompat.widget.SearchView" />
+    <!-- TODO: just for test   -->
+    <item
+        android:id="@+id/logout"
+        android:title="logout" />
 </menu>

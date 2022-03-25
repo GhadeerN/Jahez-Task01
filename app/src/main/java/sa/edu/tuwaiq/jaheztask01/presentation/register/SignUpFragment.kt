@@ -37,7 +37,8 @@ class SignUpFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         // Login text btn
         binding.loginTextView.setOnClickListener {
-            findNavController().navigate(R.id.action_signUpFragment_to_loginFragment)
+            findNavController().popBackStack()
+//            findNavController().navigate(R.id.action_signUpFragment_to_loginFragment)
         }
 
         // Signup btn

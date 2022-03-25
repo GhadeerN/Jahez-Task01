@@ -7,4 +7,8 @@ interface FirebaseRepository {
     suspend fun login(email: String, password: String): AuthResult
 
     suspend fun signup(name: String, email: String, password: String): AuthResult
+
+    fun isUserLoggedIn(): Boolean
+
+    fun signOut()
 }

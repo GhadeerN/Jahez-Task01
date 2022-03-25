@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import sa.edu.tuwaiq.jaheztask01.common.State
+import sa.edu.tuwaiq.jaheztask01.domain.usecase.IsUserLoggedInUseCase
 import sa.edu.tuwaiq.jaheztask01.domain.usecase.LoginUseCase
 import javax.inject.Inject
 
@@ -13,11 +14,13 @@ private const val TAG = "LoginViewModel"
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val loginUseCase: LoginUseCase
+    private val loginUseCase: LoginUseCase,
+    private val isUserLoggedInUseCase: IsUserLoggedInUseCase,
 ) : ViewModel() {
     // Change the UI state via loginState
     private val _loginState = MutableSharedFlow<LoginState>()
     val loginState = _loginState.asSharedFlow()
+
 
     fun login(email: String, password: String) {
 
@@ -36,4 +39,8 @@ class LoginViewModel @Inject constructor(
 
         }.launchIn(viewModelScope)
     }
+
+    // Check if the user is already logged in or not
+    fun isUserLoggedIn() = isUserLoggedInUseCase.invoke()
+
 }

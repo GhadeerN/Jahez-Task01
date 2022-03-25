@@ -19,7 +19,11 @@
     <fragment
         android:id="@+id/restaurantListFragment"
         android:name="sa.edu.tuwaiq.jaheztask01.presentation.restaurantlist.RestaurantListFragment"
-        android:label="RestaurantListFragment" />
+        android:label="RestaurantListFragment" >
+        <action
+            android:id="@+id/action_restaurantListFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
     <fragment
         android:id="@+id/signUpFragment"
         android:name="sa.edu.tuwaiq.jaheztask01.presentation.register.SignUpFragment"

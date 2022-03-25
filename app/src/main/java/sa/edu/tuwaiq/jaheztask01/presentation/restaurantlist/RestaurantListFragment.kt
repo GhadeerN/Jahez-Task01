@@ -8,6 +8,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -119,6 +120,11 @@ class RestaurantListFragment : Fragment() {
             }
             R.id.distance_filter -> {
                 restaurantListAdapter.submitList(restaurantList.sortedByDescending { it.distance })
+            }
+            //TODO: erase it, Just for test purposes
+            R.id.logout -> {
+                viewModel.signOut()
+                findNavController().navigate(R.id.action_restaurantListFragment_to_loginFragment)
             }
         }
         return super.onOptionsItemSelected(item)

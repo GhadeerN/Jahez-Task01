@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import sa.edu.tuwaiq.jaheztask01.common.State
 import sa.edu.tuwaiq.jaheztask01.domain.usecase.GetRestaurantsUseCase
+import sa.edu.tuwaiq.jaheztask01.domain.usecase.SignOutUseCase
 import sa.edu.tuwaiq.jaheztask01.presentation.login.LoginState
 import java.lang.Exception
 import javax.inject.Inject
@@ -19,7 +20,9 @@ private const val TAG = "RestaurantListViewModel"
 
 @HiltViewModel
 class RestaurantListViewModel @Inject constructor(
-    private val getRestaurantsUseCase: GetRestaurantsUseCase
+    private val getRestaurantsUseCase: GetRestaurantsUseCase,
+    //TODO for test
+    private val signOutUseCase: SignOutUseCase
 ) : ViewModel() {
     private val _restaurantsState = MutableSharedFlow<RestaurantState>()
     val restaurantsState = _restaurantsState.asSharedFlow()
@@ -44,5 +47,9 @@ class RestaurantListViewModel @Inject constructor(
                     }
                 }.launchIn(viewModelScope)
         }
+    }
+
+    fun signOut() {
+        signOutUseCase.invoke()
     }
 }

@@ -42,6 +42,9 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        if (viewModel.isUserLoggedIn()) {
+            findNavController().navigate(R.id.action_loginFragment_to_restaurantListFragment)
+        }
         binding = LoginFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
