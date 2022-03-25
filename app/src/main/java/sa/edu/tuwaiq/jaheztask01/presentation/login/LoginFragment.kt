@@ -49,9 +49,34 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Login btn
         binding.loginButton.setOnClickListener {
             Log.d(TAG, "login clicked")
-            logIn()
+            logIn() // To collect the input fields and call the login functionality
+        }
+
+        // Collect the UI state (isLoading, isSuccess, error?)
+        lifecycleScope.launch {
+            viewModel.loginState.collectLatest { state ->
+
+                when {
+                    state.isLoading -> {
+                        Log.d(TAG, "is loading")
+                        binding.progressBar.visibility = View.VISIBLE
+                    }
+                    state.isSuccess -> {
+                        Log.d(TAG, "login success")
+                        binding.progressBar.visibility = View.GONE
+                        findNavController().navigate(R.id.action_loginFragment_to_restaurantListFragment)
+                    }
+                    state.error.isNotBlank() -> {
+                        binding.progressBar.visibility = View.GONE
+                        Toast.makeText(requireActivity(), state.error, Toast.LENGTH_LONG)
+                            .show()
+                    }
+                }
+
+            }
         }
     }
 
@@ -63,31 +88,10 @@ class LoginFragment : Fragment() {
         if (checkLoginValidity(email, password)) {
             Log.d(TAG, "login: $email, $password")
             viewModel.login(email, password)
-            lifecycleScope.launch {
-                viewModel.loginState.collect { state ->
-                    Log.d(TAG, "state: $state")
-                    when {
-                        state.isLoading -> {
-                            Log.d(TAG, "is loading")
-                            binding.progressBar.visibility = View.VISIBLE
-                        }
-                        state.isSuccess -> {
-                            Log.d(TAG, "login success")
-                            binding.progressBar.visibility = View.GONE
-                            findNavController().navigate(R.id.action_loginFragment_to_restaurantListFragment)
-                        }
-                        state.error.isNotBlank() -> {
-                            binding.progressBar.visibility = View.GONE
-                            Toast.makeText(requireActivity(), state.error, Toast.LENGTH_SHORT)
-                                .show()
-                        }
-                    }
-                }
-            }
         }
     }
 
-    // This function is to check the fields validity and show proper error messages to the user ----
+    // This function is to check the fields validity and show proper error messages to the user
     private fun checkLoginValidity(email: String, password: String): Boolean {
         var state = true
 
