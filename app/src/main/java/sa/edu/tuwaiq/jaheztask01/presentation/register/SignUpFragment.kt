@@ -2,7 +2,6 @@ package sa.edu.tuwaiq.jaheztask01.presentation.register
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,13 +12,14 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import sa.edu.tuwaiq.jaheztask01.R
+import sa.edu.tuwaiq.jaheztask01.common.base.BaseFragment
 import sa.edu.tuwaiq.jaheztask01.common.util.InputFieldValidation
 import sa.edu.tuwaiq.jaheztask01.databinding.SignUpFragmentBinding
 
 private const val TAG = "SignUpFragment"
 
 @AndroidEntryPoint
-class SignUpFragment : Fragment() {
+class SignUpFragment : BaseFragment() {
 
 
     private val viewModel: SignUpViewModel by activityViewModels()
@@ -37,8 +37,7 @@ class SignUpFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         // Login text btn
         binding.loginTextView.setOnClickListener {
-            findNavController().popBackStack()
-//            findNavController().navigate(R.id.action_signUpFragment_to_loginFragment)
+            findNavController().safeNavigate(R.id.signUpFragment, R.id.loginFragment)
         }
 
         // Signup btn
@@ -57,7 +56,10 @@ class SignUpFragment : Fragment() {
                     state.isSuccess -> {
                         Log.d(TAG, "signup success")
                         binding.signupProgressBar.visibility = View.GONE
-                        findNavController().navigate(R.id.action_signUpFragment_to_restaurantListFragment)
+                        findNavController().safeNavigate(
+                            R.id.signUpFragment,
+                            R.id.restaurantListFragment
+                        )
                     }
                     state.error.isNotBlank() -> {
                         Log.d(TAG, "signup ERROR")

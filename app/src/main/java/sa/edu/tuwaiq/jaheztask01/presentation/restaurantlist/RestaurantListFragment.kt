@@ -1,25 +1,32 @@
 package sa.edu.tuwaiq.jaheztask01.presentation.restaurantlist
 
+import android.annotation.SuppressLint
+import android.content.Context
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import androidx.annotation.IdRes
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.internal.notify
+import okhttp3.internal.notifyAll
 import sa.edu.tuwaiq.jaheztask01.R
+import sa.edu.tuwaiq.jaheztask01.common.base.BaseFragment
 import sa.edu.tuwaiq.jaheztask01.databinding.RestaurantListFragmentBinding
 import sa.edu.tuwaiq.jaheztask01.domain.model.RestaurantItem
 
 private const val TAG = "RestaurantListFragment"
 
 @AndroidEntryPoint
-class RestaurantListFragment : Fragment() {
+class RestaurantListFragment : BaseFragment() {
 
 
     private val viewModel: RestaurantListViewModel by activityViewModels()
@@ -46,6 +53,7 @@ class RestaurantListFragment : Fragment() {
     }
 
     private fun getRestaurantList() {
+        Log.d(TAG, "getRestaurantList --------------------------")
         lifecycleScope.launch {
             viewModel.restaurantsState.collect { state ->
                 Log.d(TAG, "get list state: $state")
@@ -124,7 +132,7 @@ class RestaurantListFragment : Fragment() {
             //TODO: erase it, Just for test purposes
             R.id.logout -> {
                 viewModel.signOut()
-                findNavController().navigate(R.id.action_restaurantListFragment_to_loginFragment)
+                findNavController().safeNavigate(R.id.restaurantListFragment, R.id.loginFragment)
             }
         }
         return super.onOptionsItemSelected(item)
