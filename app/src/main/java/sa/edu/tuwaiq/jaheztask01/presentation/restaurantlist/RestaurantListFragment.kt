@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -71,6 +72,41 @@ class RestaurantListFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
         // This will connect the main_menu.xml with the action/tool bar :)
         requireActivity().menuInflater.inflate(R.menu.filter_menu, menu)
+
+        val searchItem = menu.findItem(R.id.app_bar_search)
+
+        /* Normally the searchItem will be treated as normal menuItem, so we have to emphasis that
+           it's a view */
+        val searchView = searchItem.actionView as SearchView
+
+        // Search functionality
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                restaurantListAdapter.submitList(
+                    restaurantList.filter {
+                        it.name.lowercase().contains(query!!.lowercase())
+                    }
+                )
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return true
+            }
+
+        })
+
+        searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
+            override fun onMenuItemActionExpand(p0: MenuItem?): Boolean {
+                return true
+            }
+
+            override fun onMenuItemActionCollapse(p0: MenuItem?): Boolean {
+                restaurantListAdapter.submitList(restaurantList)
+                return true
+            }
+
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
