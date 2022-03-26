@@ -9,16 +9,19 @@ import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import sa.edu.tuwaiq.jaheztask01.R
+import sa.edu.tuwaiq.jaheztask01.databinding.ActivityMainBinding
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     // For the action bar
     private lateinit var navController: NavController
+    lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
@@ -27,8 +30,7 @@ class MainActivity : AppCompatActivity() {
 //        setupActionBarWithNavController(navController)
 
         // to link the nav bottom bar with nav host
-        // TODO: Do binding (for some reason it didn't work!)
-        val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        val bottomNav = binding.bottomNavigationView
         NavigationUI.setupWithNavController(bottomNav, navController)
 
         // Hide/show bottom nav bar on the fragments

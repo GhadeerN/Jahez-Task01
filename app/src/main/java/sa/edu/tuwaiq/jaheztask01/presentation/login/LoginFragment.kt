@@ -26,7 +26,6 @@ class LoginFragment : BaseFragment() {
     private val viewModel: LoginViewModel by activityViewModels()
     lateinit var binding: LoginFragmentBinding
 
-    //TODO collect these data from the xml to the viewModel
     lateinit var email: String
     lateinit var password: String
 
