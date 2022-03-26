@@ -18,8 +18,6 @@ private const val TAG = "RestaurantListViewModel"
 @HiltViewModel
 class RestaurantListViewModel @Inject constructor(
     private val getRestaurantsUseCase: GetRestaurantsUseCase,
-    //TODO for test
-    private val signOutUseCase: SignOutUseCase
 ) : ViewModel() {
     private val _restaurantsState = MutableStateFlow(RestaurantState())
     val restaurantsState = _restaurantsState.asStateFlow()
@@ -44,9 +42,5 @@ class RestaurantListViewModel @Inject constructor(
                     }
                 }.launchIn(viewModelScope)
         }
-    }
-
-    fun signOut() {
-        signOutUseCase.invoke()
     }
 }

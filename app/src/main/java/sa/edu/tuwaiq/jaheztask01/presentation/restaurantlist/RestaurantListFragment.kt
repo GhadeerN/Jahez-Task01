@@ -134,11 +134,6 @@ class RestaurantListFragment : BaseFragment() {
             R.id.distance_filter -> {
                 restaurantListAdapter.submitList(restaurantList.sortedByDescending { it.distance })
             }
-            //TODO: erase it, Just for test purposes
-            R.id.logout -> {
-                viewModel.signOut()
-                findNavController().safeNavigate(R.id.restaurantListFragment, R.id.loginFragment)
-            }
         }
         return super.onOptionsItemSelected(item)
     }

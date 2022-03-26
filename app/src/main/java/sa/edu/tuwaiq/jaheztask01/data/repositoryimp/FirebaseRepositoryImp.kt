@@ -3,8 +3,10 @@ package sa.edu.tuwaiq.jaheztask01.data.repositoryimp
 import android.util.Log
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import kotlinx.coroutines.tasks.await
+import sa.edu.tuwaiq.jaheztask01.domain.model.User
 import sa.edu.tuwaiq.jaheztask01.domain.repository.FirebaseRepository
 import javax.inject.Inject
 
@@ -33,6 +35,13 @@ class FirebaseRepositoryImp @Inject constructor(
 
     override fun signOut() {
         auth.signOut()
+    }
+
+    override fun getUserProfile(): User {
+        return User(
+            auth.currentUser!!.displayName ?: "",
+            auth.currentUser!!.email!!
+        )
     }
 
 }

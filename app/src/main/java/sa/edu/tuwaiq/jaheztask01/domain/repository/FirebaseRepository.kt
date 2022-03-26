@@ -1,6 +1,8 @@
 package sa.edu.tuwaiq.jaheztask01.domain.repository
 
 import com.google.firebase.auth.AuthResult
+import com.google.firebase.auth.FirebaseUser
+import sa.edu.tuwaiq.jaheztask01.domain.model.User
 
 
 interface FirebaseRepository {
@@ -11,4 +13,6 @@ interface FirebaseRepository {
     fun isUserLoggedIn(): Boolean
 
     fun signOut()
+
+    fun getUserProfile(): User
 }

@@ -26,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/name"
-                android:textSize="24sp" />
+                android:textSize="16sp" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/outlinedTextFieldName"
@@ -49,7 +49,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/email"
-                android:textSize="24sp" />
+                android:textSize="16sp" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/outlinedTextFieldEmail"
@@ -72,10 +72,11 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/sign_out_button"
+            style="?attr/materialButtonOutlinedStyle"
             android:layout_width="371dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="52dp"
+            android:layout_marginBottom="16dp"
             android:text="@string/sign_out"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
