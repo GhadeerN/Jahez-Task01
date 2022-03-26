@@ -1,9 +1,7 @@
 package sa.edu.tuwaiq.jaheztask01.presentation.profile
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,11 +13,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import sa.edu.tuwaiq.jaheztask01.R
 import sa.edu.tuwaiq.jaheztask01.common.base.BaseFragment
-import sa.edu.tuwaiq.jaheztask01.common.util.BottomNavBarUtil
 import sa.edu.tuwaiq.jaheztask01.databinding.ProfileFragmentBinding
 import sa.edu.tuwaiq.jaheztask01.domain.model.User
 
 private const val TAG = "ProfileFragment"
+
 @AndroidEntryPoint
 class ProfileFragment : BaseFragment() {
 
@@ -36,9 +34,6 @@ class ProfileFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Show bottom nav bar
-        BottomNavBarUtil.get().showNavBarWithAnimation()
 
         // Collect profile UI state
         lifecycleScope.launch {
@@ -63,7 +58,7 @@ class ProfileFragment : BaseFragment() {
             Log.d(TAG, "signed out!!")
             viewModel.signOut()
             findNavController().safeNavigate(R.id.profileFragment, R.id.loginFragment).also {
-                findNavController().enableOnBackPressed(false)
+                findNavController().popBackStack(R.id.profileFragment, true)
             }
         }
     }

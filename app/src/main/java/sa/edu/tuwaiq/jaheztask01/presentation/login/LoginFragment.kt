@@ -1,35 +1,21 @@
 package sa.edu.tuwaiq.jaheztask01.presentation.login
 
-import android.annotation.SuppressLint
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.ComponentActivity
-import androidx.annotation.IdRes
-import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.NavController
-import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import sa.edu.tuwaiq.jaheztask01.R
 import sa.edu.tuwaiq.jaheztask01.common.base.BaseFragment
-import sa.edu.tuwaiq.jaheztask01.common.util.BottomNavBarUtil
 import sa.edu.tuwaiq.jaheztask01.common.util.InputFieldValidation
 import sa.edu.tuwaiq.jaheztask01.databinding.LoginFragmentBinding
-import sa.edu.tuwaiq.jaheztask01.presentation.restaurantlist.RestaurantListFragment
-import javax.inject.Inject
 
 private const val TAG = "LoginFragment"
 
@@ -47,7 +33,7 @@ class LoginFragment : BaseFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         if (viewModel.isUserLoggedIn()) {
             findNavController().navigate(R.id.action_loginFragment_to_restaurantListFragment)
         }
@@ -57,9 +43,6 @@ class LoginFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Hide bottom nav bar
-        BottomNavBarUtil.get().hidNavBar()
 
         // Signup text btn
         binding.signupTextView.setOnClickListener {

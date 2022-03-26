@@ -1,26 +1,15 @@
 package sa.edu.tuwaiq.jaheztask01.presentation.restaurantlist
 
-import android.annotation.SuppressLint
-import android.content.Context
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import androidx.annotation.IdRes
 import androidx.appcompat.widget.SearchView
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.internal.notify
-import okhttp3.internal.notifyAll
 import sa.edu.tuwaiq.jaheztask01.R
 import sa.edu.tuwaiq.jaheztask01.common.base.BaseFragment
-import sa.edu.tuwaiq.jaheztask01.common.util.BottomNavBarUtil
 import sa.edu.tuwaiq.jaheztask01.databinding.RestaurantListFragmentBinding
 import sa.edu.tuwaiq.jaheztask01.domain.model.RestaurantItem
 
@@ -48,9 +37,6 @@ class RestaurantListFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Show bottom nav bar
-        BottomNavBarUtil.get().showNavBarWithAnimation()
 
         restaurantListAdapter = RestaurantListAdapter()
         binding.resturantsRecyclerView.adapter = restaurantListAdapter
