@@ -40,4 +40,8 @@
         android:name="sa.edu.tuwaiq.jaheztask01.presentation.profile.ProfileFragment"
         android:label="profile_fragment"
         tools:layout="@layout/profile_fragment" />
+    <fragment
+        android:id="@+id/offersFragment"
+        android:name="sa.edu.tuwaiq.jaheztask01.presentation.offers.OffersFragment"
+        android:label="OffersFragment" />
 </navigation>
