@@ -25,6 +25,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import sa.edu.tuwaiq.jaheztask01.R
 import sa.edu.tuwaiq.jaheztask01.common.base.BaseFragment
+import sa.edu.tuwaiq.jaheztask01.common.util.BottomNavBarUtil
 import sa.edu.tuwaiq.jaheztask01.common.util.InputFieldValidation
 import sa.edu.tuwaiq.jaheztask01.databinding.LoginFragmentBinding
 import sa.edu.tuwaiq.jaheztask01.presentation.restaurantlist.RestaurantListFragment
@@ -56,6 +57,10 @@ class LoginFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Hide bottom nav bar
+        BottomNavBarUtil.get().hidNavBar()
+
         // Signup text btn
         binding.signupTextView.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_signUpFragment)

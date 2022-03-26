@@ -13,6 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import sa.edu.tuwaiq.jaheztask01.R
 import sa.edu.tuwaiq.jaheztask01.common.base.BaseFragment
+import sa.edu.tuwaiq.jaheztask01.common.util.BottomNavBarUtil
 import sa.edu.tuwaiq.jaheztask01.common.util.InputFieldValidation
 import sa.edu.tuwaiq.jaheztask01.databinding.SignUpFragmentBinding
 
@@ -35,6 +36,10 @@ class SignUpFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Hide bottom nav bar
+        BottomNavBarUtil.get().hidNavBar()
+
         // Login text btn
         binding.loginTextView.setOnClickListener {
             findNavController().safeNavigate(R.id.signUpFragment, R.id.loginFragment)

@@ -20,6 +20,7 @@ import okhttp3.internal.notify
 import okhttp3.internal.notifyAll
 import sa.edu.tuwaiq.jaheztask01.R
 import sa.edu.tuwaiq.jaheztask01.common.base.BaseFragment
+import sa.edu.tuwaiq.jaheztask01.common.util.BottomNavBarUtil
 import sa.edu.tuwaiq.jaheztask01.databinding.RestaurantListFragmentBinding
 import sa.edu.tuwaiq.jaheztask01.domain.model.RestaurantItem
 
@@ -47,6 +48,10 @@ class RestaurantListFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Show bottom nav bar
+        BottomNavBarUtil.get().showNavBarWithAnimation()
+
         restaurantListAdapter = RestaurantListAdapter()
         binding.resturantsRecyclerView.adapter = restaurantListAdapter
         getRestaurantList()
