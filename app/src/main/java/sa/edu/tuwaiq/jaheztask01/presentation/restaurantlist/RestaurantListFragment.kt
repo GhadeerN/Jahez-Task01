@@ -11,7 +11,6 @@ import kotlinx.coroutines.launch
 import sa.edu.tuwaiq.jaheztask01.R
 import sa.edu.tuwaiq.jaheztask01.common.base.BaseFragment
 import sa.edu.tuwaiq.jaheztask01.databinding.RestaurantListFragmentBinding
-import sa.edu.tuwaiq.jaheztask01.domain.model.RestaurantItem
 
 private const val TAG = "RestaurantListFragment"
 
@@ -22,7 +21,6 @@ class RestaurantListFragment : BaseFragment() {
     private val viewModel: RestaurantListViewModel by activityViewModels()
     private lateinit var binding: RestaurantListFragmentBinding
     private lateinit var restaurantListAdapter: RestaurantListAdapter
-    lateinit var restaurantList: List<RestaurantItem>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,7 +52,6 @@ class RestaurantListFragment : BaseFragment() {
                         binding.restaurantListProgressBar.visibility = View.VISIBLE
                     }
                     state.restaurants.isNotEmpty() -> {
-                        restaurantList = state.restaurants
                         Log.d(TAG, "list: ${state.restaurants}")
                         binding.restaurantListProgressBar.visibility = View.GONE
                         restaurantListAdapter.submitList(state.restaurants)
@@ -83,7 +80,7 @@ class RestaurantListFragment : BaseFragment() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 restaurantListAdapter.submitList(
-                    restaurantList.filter {
+                    viewModel.restaurantsState.value.restaurants.filter {
                         it.name.lowercase().contains(query!!.lowercase())
                     }
                 )
@@ -102,7 +99,7 @@ class RestaurantListFragment : BaseFragment() {
             }
 
             override fun onMenuItemActionCollapse(p0: MenuItem?): Boolean {
-                restaurantListAdapter.submitList(restaurantList)
+                restaurantListAdapter.submitList(viewModel.restaurantsState.value.restaurants)
                 return true
             }
 
@@ -112,13 +109,13 @@ class RestaurantListFragment : BaseFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.all_filter -> {
-                restaurantListAdapter.submitList(restaurantList.filter { it.hasOffer })
+                restaurantListAdapter.submitList(viewModel.restaurantsState.value.restaurants.filter { it.hasOffer })
             }
             R.id.rate_filter -> {
-                restaurantListAdapter.submitList(restaurantList.sortedByDescending { it.rating })
+                restaurantListAdapter.submitList(viewModel.restaurantsState.value.restaurants.sortedByDescending { it.rating })
             }
             R.id.distance_filter -> {
-                restaurantListAdapter.submitList(restaurantList.sortedByDescending { it.distance })
+                restaurantListAdapter.submitList(viewModel.restaurantsState.value.restaurants.sortedByDescending { it.distance })
             }
         }
         return super.onOptionsItemSelected(item)

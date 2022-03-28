@@ -8,9 +8,6 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import sa.edu.tuwaiq.jaheztask01.common.State
 import sa.edu.tuwaiq.jaheztask01.domain.usecase.GetRestaurantsUseCase
-import sa.edu.tuwaiq.jaheztask01.domain.usecase.SignOutUseCase
-import sa.edu.tuwaiq.jaheztask01.presentation.login.LoginState
-import java.lang.Exception
 import javax.inject.Inject
 
 private const val TAG = "RestaurantListViewModel"
