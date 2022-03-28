@@ -6,7 +6,13 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import sa.edu.tuwaiq.jaheztask01.common.State
+import kotlinx.coroutines.launch
 import sa.edu.tuwaiq.jaheztask01.domain.model.AuthState
+import sa.edu.tuwaiq.jaheztask01.common.util.Constants.EMPTY_EMAIL
+import sa.edu.tuwaiq.jaheztask01.common.util.Constants.EMPTY_PASSWORD
+import sa.edu.tuwaiq.jaheztask01.common.util.Constants.INVALID_EMAIL
+import sa.edu.tuwaiq.jaheztask01.common.util.Constants.VALID_INPUTS
+import sa.edu.tuwaiq.jaheztask01.common.util.InputFieldValidation
 import sa.edu.tuwaiq.jaheztask01.domain.usecase.IsUserLoggedInUseCase
 import sa.edu.tuwaiq.jaheztask01.domain.usecase.LoginUseCase
 import javax.inject.Inject
@@ -22,6 +28,9 @@ class LoginViewModel @Inject constructor(
     private val _loginState = MutableSharedFlow<AuthState>()
     val loginState = _loginState.asSharedFlow()
 
+    // Check the input fields validity
+    private val _inputState = MutableSharedFlow<List<Int>>()
+    val inputState = _inputState.asSharedFlow()
 
     fun login(email: String, password: String) {
 
@@ -39,6 +48,33 @@ class LoginViewModel @Inject constructor(
             }
 
         }.launchIn(viewModelScope)
+    }
+
+    // This function is to check the fields validity and show proper error messages to the user
+    fun inputValidation(email: String, password: String) {
+        Log.d(TAG, "inputValidation()")
+        viewModelScope.launch {
+            var isValid = true
+            val inputStates = mutableListOf<Int>()
+
+            if (email.isBlank()) {
+                inputStates.add(EMPTY_EMAIL)
+                isValid = false
+            } else if (!InputFieldValidation.emailsIsValid(email)) {
+                inputStates.add(INVALID_EMAIL)
+                isValid = false
+            }
+
+            if (password.isBlank()) {
+                isValid = false
+                inputStates.add(EMPTY_PASSWORD)
+            }
+            _inputState.emit(inputStates)
+            Log.d(TAG, "input state list: $inputStates")
+
+            if (isValid)
+                _inputState.emit(listOf(VALID_INPUTS))
+        }
     }
 
     // Check if the user is already logged in or not
