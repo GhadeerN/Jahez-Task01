@@ -3,6 +3,7 @@ package sa.edu.tuwaiq.jaheztask01.presentation.restaurantlist
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -58,6 +59,7 @@ class RestaurantListFragment : BaseFragment() {
                     }
                     state.error.isNotBlank() -> {
                         binding.restaurantListProgressBar.visibility = View.GONE
+                        Toast.makeText(requireContext(), state.error, Toast.LENGTH_LONG).show()
                         Log.d(TAG, "error: ${state.error}")
                     }
                 }
