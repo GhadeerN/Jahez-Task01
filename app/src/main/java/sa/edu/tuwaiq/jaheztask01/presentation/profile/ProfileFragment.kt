@@ -57,7 +57,7 @@ class ProfileFragment : BaseFragment() {
         binding.signOutButton.setOnClickListener {
             Log.d(TAG, "signed out!!")
             viewModel.signOut()
-            findNavController().safeNavigate(R.id.profileFragment, R.id.loginFragment).also {
+            safeNavigate(R.id.profileFragment, R.id.loginFragment).also {
                 findNavController().popBackStack(R.id.profileFragment, true)
             }
         }

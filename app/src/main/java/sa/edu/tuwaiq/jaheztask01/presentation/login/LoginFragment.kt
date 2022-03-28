@@ -66,7 +66,7 @@ class LoginFragment : BaseFragment() {
                     state.isSuccess -> {
                         Log.d(TAG, "login success")
                         binding.progressBar.visibility = View.GONE
-                        findNavController().safeNavigate(
+                        safeNavigate(
                             R.id.loginFragment,
                             R.id.restaurantListFragment
                         )

@@ -15,7 +15,7 @@ import sa.edu.tuwaiq.jaheztask01.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
 
     // For the action bar
-    private lateinit var navController: NavController
+    lateinit var navController: NavController
     lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

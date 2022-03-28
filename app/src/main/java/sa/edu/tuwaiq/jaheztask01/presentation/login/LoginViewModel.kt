@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import sa.edu.tuwaiq.jaheztask01.common.State
+import sa.edu.tuwaiq.jaheztask01.domain.model.AuthState
 import sa.edu.tuwaiq.jaheztask01.domain.usecase.IsUserLoggedInUseCase
 import sa.edu.tuwaiq.jaheztask01.domain.usecase.LoginUseCase
 import javax.inject.Inject
@@ -18,7 +19,7 @@ class LoginViewModel @Inject constructor(
     private val isUserLoggedInUseCase: IsUserLoggedInUseCase,
 ) : ViewModel() {
     // Change the UI state via loginState
-    private val _loginState = MutableSharedFlow<LoginState>()
+    private val _loginState = MutableSharedFlow<AuthState>()
     val loginState = _loginState.asSharedFlow()
 
 
@@ -28,13 +29,13 @@ class LoginViewModel @Inject constructor(
         loginUseCase(email, password).onEach { result ->
 
             when (result) {
-                is State.Success -> _loginState.emit(LoginState(isSuccess = true))
+                is State.Success -> _loginState.emit(AuthState(isSuccess = true))
                 is State.Error -> _loginState.emit(
-                    LoginState(
+                    AuthState(
                         error = result.message ?: "Unexpected error occurred!"
                     )
                 )
-                is State.Loading -> _loginState.emit(LoginState(isLoading = true))
+                is State.Loading -> _loginState.emit(AuthState(isLoading = true))
             }
 
         }.launchIn(viewModelScope)

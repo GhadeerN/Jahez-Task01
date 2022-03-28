@@ -38,7 +38,7 @@ class SignUpFragment : BaseFragment() {
 
         // Login text btn
         binding.loginTextView.setOnClickListener {
-            findNavController().safeNavigate(R.id.signUpFragment, R.id.loginFragment)
+            safeNavigate(R.id.signUpFragment, R.id.loginFragment)
         }
 
         // Signup btn
@@ -57,7 +57,7 @@ class SignUpFragment : BaseFragment() {
                     state.isSuccess -> {
                         Log.d(TAG, "signup success")
                         binding.signupProgressBar.visibility = View.GONE
-                        findNavController().safeNavigate(
+                        safeNavigate(
                             R.id.signUpFragment,
                             R.id.restaurantListFragment
                         ).also {
