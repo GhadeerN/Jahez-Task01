@@ -17,11 +17,7 @@ class ProfileViewModel @Inject constructor(
     private val _profileState = MutableStateFlow(ProfileState())
     val profileState = _profileState.asStateFlow()
 
-    init {
-        getProfileInfo()
-    }
-
-    private fun getProfileInfo() {
+     fun getProfileInfo() {
         getUserProfileInfo.invoke().onEach { result ->
 
             when (result) {

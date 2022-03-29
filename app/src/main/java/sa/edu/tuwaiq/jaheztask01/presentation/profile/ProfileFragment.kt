@@ -35,7 +35,15 @@ class ProfileFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.getProfileInfo()
+
         // Collect profile UI state
+        observeProfileState()
+
+        onSignOutClicked()
+    }
+
+    private fun observeProfileState() {
         lifecycleScope.launch {
             viewModel.profileState.collect { state ->
                 when {
@@ -43,7 +51,7 @@ class ProfileFragment : BaseFragment() {
                         Log.d(TAG, "is loading")
                     }
                     state.userInfo != null -> {
-                        Log.d(TAG, "get user info success")
+                        Log.d(TAG, "get user info success: ${state.userInfo}")
                         setUserInfo(state.userInfo)
                     }
                     state.error.isNotBlank() -> {
@@ -53,11 +61,13 @@ class ProfileFragment : BaseFragment() {
                 }
             }
         }
+    }
 
+    private fun onSignOutClicked() {
         binding.signOutButton.setOnClickListener {
             Log.d(TAG, "signed out!!")
             viewModel.signOut()
-            safeNavigate(R.id.profileFragment, R.id.loginFragment).also {
+            findNavController().navigate(R.id.action_profileFragment_to_loginFragment).also {
                 findNavController().popBackStack(R.id.profileFragment, true)
             }
         }
