@@ -114,30 +114,53 @@ class LoginFragment : BaseFragment() {
     }
 
     private fun observeLogInState() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.loginState.collectLatest { state ->
-                when {
-                    state.isLoading -> {
-                        Log.d(TAG, "is loading")
-                        binding.progressBar.visibility = View.VISIBLE
-                    }
-                    state.isSuccess -> {
-                        Log.d(TAG, "login success")
-                        binding.progressBar.visibility = View.GONE
-                        safeNavigate(
-                            R.id.loginFragment,
-                            R.id.restaurantListFragment
-                        )
-                    }
-                    state.error.isNotBlank() -> {
-                        binding.progressBar.visibility = View.GONE
-                        Toast.makeText(requireActivity(), state.error, Toast.LENGTH_LONG)
-                            .show()
-                    }
+        collectLatestLifecycleFlow(viewLifecycleOwner, viewModel.loginState) { state ->
+            Log.d(TAG, "state: $state")
+            when {
+                state.isLoading -> {
+                    Log.d(TAG, "is loading")
+                    binding.progressBar.visibility = View.VISIBLE
                 }
-
+                state.isSuccess -> {
+                    Log.d(TAG, "login success")
+                    binding.progressBar.visibility = View.GONE
+                    safeNavigate(
+                        R.id.loginFragment,
+                        R.id.restaurantListFragment
+                    )
+                }
+                state.error.isNotBlank() -> {
+                    binding.progressBar.visibility = View.GONE
+                    Toast.makeText(requireActivity(), state.error, Toast.LENGTH_LONG)
+                        .show()
+                }
             }
+
         }
+//        viewLifecycleOwner.lifecycleScope.launch {
+//            viewModel.loginState.collectLatest { state ->
+//                when {
+//                    state.isLoading -> {
+//                        Log.d(TAG, "is loading")
+//                        binding.progressBar.visibility = View.VISIBLE
+//                    }
+//                    state.isSuccess -> {
+//                        Log.d(TAG, "login success")
+//                        binding.progressBar.visibility = View.GONE
+//                        safeNavigate(
+//                            R.id.loginFragment,
+//                            R.id.restaurantListFragment
+//                        )
+//                    }
+//                    state.error.isNotBlank() -> {
+//                        binding.progressBar.visibility = View.GONE
+//                        Toast.makeText(requireActivity(), state.error, Toast.LENGTH_LONG)
+//                            .show()
+//                    }
+//                }
+//
+//            }
+//        }
     }
 
 }

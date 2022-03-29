@@ -8,7 +8,7 @@ import sa.edu.tuwaiq.jaheztask01.domain.model.User
 
 
 interface FirebaseRepository {
-    suspend fun login(email: String, password: String): AuthResult
+    suspend fun login(email: String, password: String): Flow<State<Boolean>>
 
     suspend fun signup(name: String, email: String, password: String): Flow<State<Boolean>>
 
@@ -16,5 +16,5 @@ interface FirebaseRepository {
 
     fun signOut()
 
-    fun getUserProfile(): User
+    fun getUserProfile(): Flow<State<User>>
 }

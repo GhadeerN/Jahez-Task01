@@ -17,14 +17,5 @@ private const val TAG = "LoginUseCase"
 class LoginUseCase @Inject constructor(
     private val firebaseRepository: FirebaseRepository
 ) {
-    operator fun invoke(email: String, password: String): Flow<State<Boolean>> = flow {
-        try {
-            Log.d(TAG, "login use case")
-            emit(State.Loading())
-            firebaseRepository.login(email, password)
-            emit(State.Success(true))
-        } catch (e: Exception) {
-            emit(State.Error(e.message ?: "Unexpected error occurred."))
-        }
-    }
+    suspend operator fun invoke(email: String, password: String): Flow<State<Boolean>> = firebaseRepository.login(email, password)
 }

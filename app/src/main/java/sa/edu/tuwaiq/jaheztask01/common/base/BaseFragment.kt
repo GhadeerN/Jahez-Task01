@@ -1,9 +1,17 @@
 package sa.edu.tuwaiq.jaheztask01.common.base
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import androidx.activity.ComponentActivity
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import sa.edu.tuwaiq.jaheztask01.presentation.MainActivity
 
 open class BaseFragment : Fragment() {
@@ -21,4 +29,25 @@ open class BaseFragment : Fragment() {
             navController.navigate(id, args)
         }
     }
+
+    // We created it to handle the coroutine and the state flow for whatever we pass
+    fun <T> collectLatestLifecycleFlow(viewLifecycleOwner: LifecycleOwner, flow: Flow<T>, collect: suspend (T) -> Unit) {
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                flow.collectLatest(collect)
+            }
+        }
+    }
+
+//    fun <T> collectLifecycleFlow(
+//        viewLifecycleOwner: LifecycleOwner,
+//        flow: Flow<T>,
+//        collect: suspend (T) -> Unit
+//    ) {
+//        lifecycleScope.launch {
+//            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+//                flow.collect(collect)
+//            }
+//        }
+//    }
 }

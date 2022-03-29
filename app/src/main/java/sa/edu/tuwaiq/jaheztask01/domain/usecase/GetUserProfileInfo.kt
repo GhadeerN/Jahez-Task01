@@ -11,13 +11,5 @@ import javax.inject.Inject
 class GetUserProfileInfo @Inject constructor(
     private val firebaseRepository: FirebaseRepository
 ) {
-    operator fun invoke(): Flow<State<User>> = flow {
-        try {
-            emit(State.Loading())
-            val user = firebaseRepository.getUserProfile()
-            emit(State.Success(user))
-        } catch (e: Exception) {
-            emit(State.Error(e.message ?: "Unexpected error occurred!"))
-        }
-    }
+    operator fun invoke(): Flow<State<User>> = firebaseRepository.getUserProfile()
 }

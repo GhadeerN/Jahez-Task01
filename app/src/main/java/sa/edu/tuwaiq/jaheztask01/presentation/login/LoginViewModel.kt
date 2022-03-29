@@ -32,7 +32,7 @@ class LoginViewModel @Inject constructor(
     private val _inputState = MutableSharedFlow<List<Int>>()
     val inputState = _inputState.asSharedFlow()
 
-    fun login(email: String, password: String) {
+    suspend fun login(email: String, password: String) {
 
         Log.d(TAG, "inside login")
         loginUseCase(email, password).onEach { result ->

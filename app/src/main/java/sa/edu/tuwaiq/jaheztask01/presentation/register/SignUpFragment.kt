@@ -93,8 +93,8 @@ class SignUpFragment : BaseFragment() {
         val passwordLayout = binding.outlinedTextFieldPass
         val confirmPassLayout = binding.outlinedTextFieldRePass
 
-        lifecycleScope.launch {
-            viewModel.inputState.collect { state ->
+//        lifecycleScope.launch {
+        collectLatestLifecycleFlow(viewLifecycleOwner, viewModel.inputState) { state ->
                 emailLayout.error = null
                 fullNameLayout.error = null
                 passwordLayout.error = null
@@ -127,32 +127,29 @@ class SignUpFragment : BaseFragment() {
                     }
                 }
             }
-        }
     }
 
     private fun observeSignUpState() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.signupState.collect { state ->
-                Log.d(TAG, "signUp state: $state")
-                when {
-                    state.isLoading -> {
-                        Log.d(TAG, "is loading")
-                        binding.signupProgressBar.visibility = View.VISIBLE
-                    }
-                    state.isSuccess -> {
-                        Log.d(TAG, "signup success -----")
-                        binding.signupProgressBar.visibility = View.GONE
-                        findNavController().navigate(R.id.action_signUpFragment_to_restaurantListFragment)
-                            .also {
-                                findNavController().popBackStack(R.id.signUpFragment, true)
-                            }
-                    }
-                    state.error.isNotBlank() -> {
-                        Log.d(TAG, "signup ERROR ----------------------")
-                        binding.signupProgressBar.visibility = View.GONE
-                        Toast.makeText(requireActivity(), state.error, Toast.LENGTH_LONG)
-                            .show()
-                    }
+        collectLatestLifecycleFlow(viewLifecycleOwner, viewModel.signupState) { state ->
+            Log.d(TAG, "signUp state: $state")
+            when {
+                state.isLoading -> {
+                    Log.d(TAG, "is loading")
+                    binding.signupProgressBar.visibility = View.VISIBLE
+                }
+                state.isSuccess -> {
+                    Log.d(TAG, "signup success -----")
+                    binding.signupProgressBar.visibility = View.GONE
+                    findNavController().navigate(R.id.action_signUpFragment_to_restaurantListFragment)
+                        .also {
+                            findNavController().popBackStack(R.id.signUpFragment, true)
+                        }
+                }
+                state.error.isNotBlank() -> {
+                    Log.d(TAG, "signup ERROR ----------------------")
+                    binding.signupProgressBar.visibility = View.GONE
+                    Toast.makeText(requireActivity(), state.error, Toast.LENGTH_LONG)
+                        .show()
                 }
             }
         }

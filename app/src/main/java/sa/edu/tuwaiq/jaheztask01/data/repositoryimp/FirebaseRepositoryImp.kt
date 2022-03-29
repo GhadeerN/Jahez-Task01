@@ -18,9 +18,19 @@ private const val TAG = "FirebaseRepositoryImp"
 class FirebaseRepositoryImp @Inject constructor(
     private val auth: FirebaseAuth
 ) : FirebaseRepository {
-    override suspend fun login(email: String, password: String): AuthResult {
-        Log.d(TAG, "Repo imp")
-        return auth.signInWithEmailAndPassword(email, password).await()
+    override suspend fun login(email: String, password: String): Flow<State<Boolean>> = flow {
+        try {
+            var success = false
+            emit(State.Loading())
+            Log.d(TAG, "Repo imp")
+            auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+                success = task.isSuccessful
+            }.await()
+            if (success)
+                emit(State.Success(success))
+        } catch (e: Exception) {
+            emit(State.Error(e.message ?: "Unexpected error occurred."))
+        }
     }
 
     override suspend fun signup(
@@ -57,11 +67,17 @@ class FirebaseRepositoryImp @Inject constructor(
         auth.signOut()
     }
 
-    override fun getUserProfile(): User {
-        return User(
-            auth.currentUser!!.displayName ?: "",
-            auth.currentUser!!.email!!
-        )
+    override fun getUserProfile(): Flow<State<User>> = flow {
+        try {
+            emit(State.Loading())
+            val user = User(
+                auth.currentUser!!.displayName ?: "",
+                auth.currentUser!!.email!!
+            )
+            emit(State.Success(user))
+        } catch (e: Exception) {
+            emit(State.Error(e.message ?: "Unexpected error occurred!"))
+        }
     }
 
 }
