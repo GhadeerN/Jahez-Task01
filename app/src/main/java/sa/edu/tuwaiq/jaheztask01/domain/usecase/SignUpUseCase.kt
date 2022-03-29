@@ -9,18 +9,13 @@ import java.lang.Exception
 import javax.inject.Inject
 
 private const val TAG = "SignUpUseCase"
+
 class SignUpUseCase @Inject constructor(
     private val firebaseRepository: FirebaseRepository
 ) {
-    operator fun invoke(name: String, email: String, password: String): Flow<State<Boolean>> =
-        flow {
-            try {
-                emit(State.Loading())
-                firebaseRepository.signup(name, email, password)
-                emit(State.Success(true))
-            } catch (e: Exception) {
-                Log.d(TAG, "SignUpUseCase error ------- ${e.message}")
-                emit(State.Error(e.message ?: "Unexpected error occurred."))
-            }
-        }
+    suspend operator fun invoke(
+        name: String,
+        email: String,
+        password: String
+    ): Flow<State<Boolean>> = firebaseRepository.signup(name, email, password)
 }

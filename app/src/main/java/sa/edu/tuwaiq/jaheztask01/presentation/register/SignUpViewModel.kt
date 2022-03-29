@@ -5,10 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.scopes.ViewModelScoped
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import sa.edu.tuwaiq.jaheztask01.common.State
 import sa.edu.tuwaiq.jaheztask01.common.util.Constants
@@ -35,10 +32,10 @@ class SignUpViewModel @Inject constructor(
     val signupState = _signupState.asSharedFlow()
 
     // Check the input fields validity
-    private val _inputState = MutableSharedFlow<List<Int>>()
-    val inputState = _inputState.asSharedFlow()
+    private val _inputState = MutableStateFlow(listOf<Int>())
+    val inputState = _inputState.asStateFlow()
 
-    fun signup(name: String, email: String, password: String) {
+    suspend fun signup(name: String, email: String, password: String) {
         signUpUseCase(name, email, password).onEach { result ->
             when (result) {
                 is State.Loading -> _signupState.emit(AuthState(isLoading = true))
@@ -87,11 +84,18 @@ class SignUpViewModel @Inject constructor(
                 inputStates.add(PASSWORDS_DONT_MATCH)
             }
 
-            _inputState.emit(inputStates)
-            Log.d(TAG, "input state list: $inputStates")
+//            _inputState.emit(inputStates)
+//            Log.d(TAG, "input state list: $inputStates")
 
-            if (isValid)
-                _inputState.emit(listOf(VALID_INPUTS))
+            if (isValid) {
+                inputStates.clear()
+                inputStates.add(VALID_INPUTS)
+//                _inputState.emit(listOf(VALID_INPUTS))
+            }
+            Log.d(TAG, "ViewModel ---- input state list: $inputStates")
+            _inputState.value = inputStates
+//            _inputState.emit(inputStates)
+//            _inputState.emitAll(inputState)
         }
     }
 }
