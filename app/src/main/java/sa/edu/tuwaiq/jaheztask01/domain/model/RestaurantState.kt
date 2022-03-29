@@ -1,4 +1,4 @@
-package sa.edu.tuwaiq.jaheztask01.presentation.restaurantlist
+package sa.edu.tuwaiq.jaheztask01.domain.model
 
 import sa.edu.tuwaiq.jaheztask01.domain.model.RestaurantItem
 

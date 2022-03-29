@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import sa.edu.tuwaiq.jaheztask01.common.State
+import sa.edu.tuwaiq.jaheztask01.domain.model.ProfileState
 import sa.edu.tuwaiq.jaheztask01.domain.usecase.GetUserProfileInfo
 import sa.edu.tuwaiq.jaheztask01.domain.usecase.SignOutUseCase
 import javax.inject.Inject

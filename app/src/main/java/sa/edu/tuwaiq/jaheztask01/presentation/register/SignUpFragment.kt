@@ -11,11 +11,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import sa.edu.tuwaiq.jaheztask01.R
 import sa.edu.tuwaiq.jaheztask01.common.base.BaseFragment
-import sa.edu.tuwaiq.jaheztask01.common.util.Constants
 import sa.edu.tuwaiq.jaheztask01.common.util.Constants.EMPTY_CONFIRM_PASSWORD
 import sa.edu.tuwaiq.jaheztask01.common.util.Constants.EMPTY_EMAIL
 import sa.edu.tuwaiq.jaheztask01.common.util.Constants.EMPTY_NAME
@@ -24,7 +22,6 @@ import sa.edu.tuwaiq.jaheztask01.common.util.Constants.INVALID_EMAIL
 import sa.edu.tuwaiq.jaheztask01.common.util.Constants.INVALID_PASSWORD
 import sa.edu.tuwaiq.jaheztask01.common.util.Constants.PASSWORDS_DONT_MATCH
 import sa.edu.tuwaiq.jaheztask01.common.util.Constants.VALID_INPUTS
-import sa.edu.tuwaiq.jaheztask01.common.util.InputFieldValidation
 import sa.edu.tuwaiq.jaheztask01.databinding.SignUpFragmentBinding
 
 private const val TAG = "SignUpFragment"
@@ -43,7 +40,7 @@ class SignUpFragment : BaseFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = SignUpFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }

@@ -7,6 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import sa.edu.tuwaiq.jaheztask01.common.State
+import sa.edu.tuwaiq.jaheztask01.domain.model.RestaurantState
 import sa.edu.tuwaiq.jaheztask01.domain.usecase.GetRestaurantsUseCase
 import javax.inject.Inject
 
