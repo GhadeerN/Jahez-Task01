@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -29,6 +28,8 @@ class ProfileFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = ProfileFragmentBinding.inflate(inflater, container, false)
+        _viewModel = viewModel
+        setUIState()
         return binding.root
     }
 
@@ -46,18 +47,8 @@ class ProfileFragment : BaseFragment() {
     private fun observeProfileState() {
         lifecycleScope.launch {
             viewModel.profileState.collect { state ->
-                when {
-                    state.isLoading -> {
-                        Log.d(TAG, "is loading")
-                    }
-                    state.userInfo != null -> {
-                        Log.d(TAG, "get user info success: ${state.userInfo}")
-                        setUserInfo(state.userInfo)
-                    }
-                    state.error.isNotBlank() -> {
-                        Toast.makeText(requireActivity(), state.error, Toast.LENGTH_LONG)
-                            .show()
-                    }
+                if (state.email != null) {
+                    setUserInfo(state)
                 }
             }
         }

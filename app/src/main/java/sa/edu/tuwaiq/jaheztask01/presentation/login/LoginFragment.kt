@@ -5,22 +5,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import sa.edu.tuwaiq.jaheztask01.R
 import sa.edu.tuwaiq.jaheztask01.common.base.BaseFragment
-import sa.edu.tuwaiq.jaheztask01.common.util.Constants
 import sa.edu.tuwaiq.jaheztask01.common.util.Constants.EMPTY_EMAIL
 import sa.edu.tuwaiq.jaheztask01.common.util.Constants.EMPTY_PASSWORD
 import sa.edu.tuwaiq.jaheztask01.common.util.Constants.INVALID_EMAIL
 import sa.edu.tuwaiq.jaheztask01.common.util.Constants.VALID_INPUTS
-import sa.edu.tuwaiq.jaheztask01.common.util.InputFieldValidation
 import sa.edu.tuwaiq.jaheztask01.databinding.LoginFragmentBinding
 
 private const val TAG = "LoginFragment"
@@ -43,6 +38,8 @@ class LoginFragment : BaseFragment() {
             findNavController().navigate(R.id.action_loginFragment_to_restaurantListFragment)
         }
         binding = LoginFragmentBinding.inflate(inflater, container, false)
+        _viewModel = viewModel
+        setUIState()
         return binding.root
     }
 
@@ -68,6 +65,7 @@ class LoginFragment : BaseFragment() {
         binding.loginEmail.text?.clear()
         binding.loginPassword.text?.clear()
     }
+
     // onClick events
     private fun onSignUpClicked() {
         binding.signupTextView.setOnClickListener {
@@ -116,51 +114,15 @@ class LoginFragment : BaseFragment() {
     private fun observeLogInState() {
         collectLatestLifecycleFlow(viewLifecycleOwner, viewModel.loginState) { state ->
             Log.d(TAG, "state: $state")
-            when {
-                state.isLoading -> {
-                    Log.d(TAG, "is loading")
-                    binding.progressBar.visibility = View.VISIBLE
-                }
-                state.isSuccess -> {
-                    Log.d(TAG, "login success")
-                    binding.progressBar.visibility = View.GONE
-                    safeNavigate(
-                        R.id.loginFragment,
-                        R.id.restaurantListFragment
-                    )
-                }
-                state.error.isNotBlank() -> {
-                    binding.progressBar.visibility = View.GONE
-                    Toast.makeText(requireActivity(), state.error, Toast.LENGTH_LONG)
-                        .show()
-                }
+            if (state) {
+                Log.d(TAG, "login success")
+                safeNavigate(
+                    R.id.loginFragment,
+                    R.id.restaurantListFragment
+                )
             }
 
         }
-//        viewLifecycleOwner.lifecycleScope.launch {
-//            viewModel.loginState.collectLatest { state ->
-//                when {
-//                    state.isLoading -> {
-//                        Log.d(TAG, "is loading")
-//                        binding.progressBar.visibility = View.VISIBLE
-//                    }
-//                    state.isSuccess -> {
-//                        Log.d(TAG, "login success")
-//                        binding.progressBar.visibility = View.GONE
-//                        safeNavigate(
-//                            R.id.loginFragment,
-//                            R.id.restaurantListFragment
-//                        )
-//                    }
-//                    state.error.isNotBlank() -> {
-//                        binding.progressBar.visibility = View.GONE
-//                        Toast.makeText(requireActivity(), state.error, Toast.LENGTH_LONG)
-//                            .show()
-//                    }
-//                }
-//
-//            }
-//        }
     }
 
 }

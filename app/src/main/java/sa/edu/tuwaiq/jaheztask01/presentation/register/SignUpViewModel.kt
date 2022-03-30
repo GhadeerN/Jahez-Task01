@@ -1,14 +1,12 @@
 package sa.edu.tuwaiq.jaheztask01.presentation.register
 
 import android.util.Log
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import sa.edu.tuwaiq.jaheztask01.common.State
-import sa.edu.tuwaiq.jaheztask01.common.util.Constants
+import sa.edu.tuwaiq.jaheztask01.common.base.BaseViewModel
 import sa.edu.tuwaiq.jaheztask01.common.util.Constants.EMPTY_CONFIRM_PASSWORD
 import sa.edu.tuwaiq.jaheztask01.common.util.Constants.EMPTY_EMAIL
 import sa.edu.tuwaiq.jaheztask01.common.util.Constants.EMPTY_NAME
@@ -18,7 +16,7 @@ import sa.edu.tuwaiq.jaheztask01.common.util.Constants.INVALID_PASSWORD
 import sa.edu.tuwaiq.jaheztask01.common.util.Constants.PASSWORDS_DONT_MATCH
 import sa.edu.tuwaiq.jaheztask01.common.util.Constants.VALID_INPUTS
 import sa.edu.tuwaiq.jaheztask01.common.util.InputFieldValidation
-import sa.edu.tuwaiq.jaheztask01.domain.model.AuthState
+import sa.edu.tuwaiq.jaheztask01.domain.model.BaseUIState
 import sa.edu.tuwaiq.jaheztask01.domain.usecase.SignUpUseCase
 import javax.inject.Inject
 
@@ -27,21 +25,24 @@ private const val TAG = "SignUpViewModel"
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
     private val signUpUseCase: SignUpUseCase
-) : ViewModel() {
-    private val _signupState = MutableSharedFlow<AuthState>()
+) : BaseViewModel() {
+    private val _signupState = MutableSharedFlow<Boolean>()
     val signupState = _signupState.asSharedFlow()
 
     // Check the input fields validity
-    private val _inputState = MutableStateFlow(listOf<Int>())
-    val inputState = _inputState.asStateFlow()
+    private val _inputState = MutableSharedFlow<List<Int>>()
+    val inputState = _inputState.asSharedFlow()
 
     suspend fun signup(name: String, email: String, password: String) {
         signUpUseCase(name, email, password).onEach { result ->
             when (result) {
-                is State.Loading -> _signupState.emit(AuthState(isLoading = true))
-                is State.Success -> _signupState.emit((AuthState(isSuccess = true)))
-                is State.Error -> _signupState.emit(
-                    AuthState(
+                is State.Loading -> _baseUIState.emit(BaseUIState(isLoading = true))
+                is State.Success -> {
+                    _signupState.emit(true)
+                    _baseUIState.emit(BaseUIState())
+                }
+                is State.Error -> _baseUIState.emit(
+                    BaseUIState(
                         error = result.message ?: "Unexpected error occurred!"
                     )
                 )
@@ -84,18 +85,12 @@ class SignUpViewModel @Inject constructor(
                 inputStates.add(PASSWORDS_DONT_MATCH)
             }
 
-//            _inputState.emit(inputStates)
-//            Log.d(TAG, "input state list: $inputStates")
-
             if (isValid) {
                 inputStates.clear()
                 inputStates.add(VALID_INPUTS)
-//                _inputState.emit(listOf(VALID_INPUTS))
             }
             Log.d(TAG, "ViewModel ---- input state list: $inputStates")
-            _inputState.value = inputStates
-//            _inputState.emit(inputStates)
-//            _inputState.emitAll(inputState)
+            _inputState.emit(inputStates)
         }
     }
 }

@@ -2,7 +2,10 @@ package sa.edu.tuwaiq.jaheztask01.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
@@ -11,6 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import sa.edu.tuwaiq.jaheztask01.R
 import sa.edu.tuwaiq.jaheztask01.databinding.ActivityMainBinding
 
+private const val TAG = "MainActivity"
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
@@ -41,6 +45,16 @@ class MainActivity : AppCompatActivity() {
                 else -> bottomNav.visibility = View.VISIBLE
             }
         }
+        Log.d(TAG, "inside main: progress bar ----- ${binding.mainProgressBar.isVisible}")
+    }
+
+    // Show/Hide progressbar
+    fun showProgressBar(state: Boolean) {
+        Log.d(TAG, "progress bar ----- $state")
+        if (state)
+            binding.mainProgressBar.visibility = View.VISIBLE
+        else
+            binding.mainProgressBar.visibility = View.GONE
     }
 
 //    override fun onSupportNavigateUp(): Boolean {

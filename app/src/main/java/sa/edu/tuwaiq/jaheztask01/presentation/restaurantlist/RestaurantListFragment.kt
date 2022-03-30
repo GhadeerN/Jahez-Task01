@@ -3,7 +3,6 @@ package sa.edu.tuwaiq.jaheztask01.presentation.restaurantlist
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -31,6 +30,8 @@ class RestaurantListFragment : BaseFragment() {
         setHasOptionsMenu(true)
 
         binding = RestaurantListFragmentBinding.inflate(inflater, container, false)
+        _viewModel = viewModel
+        setUIState()
         return binding.root
     }
 
@@ -47,21 +48,8 @@ class RestaurantListFragment : BaseFragment() {
         lifecycleScope.launch {
             viewModel.restaurantsState.collect { state ->
                 Log.d(TAG, "get list state: $state")
-                when {
-                    state.isLoading -> {
-                        Log.d(TAG, "Loading..")
-                        binding.restaurantListProgressBar.visibility = View.VISIBLE
-                    }
-                    state.restaurants.isNotEmpty() -> {
-                        Log.d(TAG, "list: ${state.restaurants}")
-                        binding.restaurantListProgressBar.visibility = View.GONE
-                        restaurantListAdapter.submitList(state.restaurants)
-                    }
-                    state.error.isNotBlank() -> {
-                        binding.restaurantListProgressBar.visibility = View.GONE
-                        Toast.makeText(requireContext(), state.error, Toast.LENGTH_LONG).show()
-                        Log.d(TAG, "error: ${state.error}")
-                    }
+                if (state.isNotEmpty()) {
+                    restaurantListAdapter.submitList(state)
                 }
             }
         }
@@ -82,7 +70,7 @@ class RestaurantListFragment : BaseFragment() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 restaurantListAdapter.submitList(
-                    viewModel.restaurantsState.value.restaurants.filter {
+                    viewModel.restaurantsState.value.filter {
                         it.name.lowercase().contains(query!!.lowercase())
                     }
                 )
@@ -101,7 +89,7 @@ class RestaurantListFragment : BaseFragment() {
             }
 
             override fun onMenuItemActionCollapse(p0: MenuItem?): Boolean {
-                restaurantListAdapter.submitList(viewModel.restaurantsState.value.restaurants)
+                restaurantListAdapter.submitList(viewModel.restaurantsState.value)
                 return true
             }
 
@@ -111,13 +99,13 @@ class RestaurantListFragment : BaseFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.all_filter -> {
-                restaurantListAdapter.submitList(viewModel.restaurantsState.value.restaurants.filter { it.hasOffer })
+                restaurantListAdapter.submitList(viewModel.restaurantsState.value)
             }
             R.id.rate_filter -> {
-                restaurantListAdapter.submitList(viewModel.restaurantsState.value.restaurants.sortedByDescending { it.rating })
+                restaurantListAdapter.submitList(viewModel.restaurantsState.value.sortedByDescending { it.rating })
             }
             R.id.distance_filter -> {
-                restaurantListAdapter.submitList(viewModel.restaurantsState.value.restaurants.sortedByDescending { it.distance })
+                restaurantListAdapter.submitList(viewModel.restaurantsState.value.sortedByDescending { it.distance })
             }
         }
         return super.onOptionsItemSelected(item)

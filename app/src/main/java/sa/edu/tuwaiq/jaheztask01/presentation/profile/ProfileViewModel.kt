@@ -1,11 +1,12 @@
 package sa.edu.tuwaiq.jaheztask01.presentation.profile
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import sa.edu.tuwaiq.jaheztask01.common.State
-import sa.edu.tuwaiq.jaheztask01.domain.model.ProfileState
+import sa.edu.tuwaiq.jaheztask01.common.base.BaseViewModel
+import sa.edu.tuwaiq.jaheztask01.domain.model.BaseUIState
+import sa.edu.tuwaiq.jaheztask01.domain.model.User
 import sa.edu.tuwaiq.jaheztask01.domain.usecase.GetUserProfileInfo
 import sa.edu.tuwaiq.jaheztask01.domain.usecase.SignOutUseCase
 import javax.inject.Inject
@@ -14,24 +15,27 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val getUserProfileInfo: GetUserProfileInfo,
     private val signOutUseCase: SignOutUseCase
-) : ViewModel() {
-    private val _profileState = MutableStateFlow(ProfileState())
+) : BaseViewModel() {
+    private val _profileState = MutableStateFlow(User())
     val profileState = _profileState.asStateFlow()
 
-     fun getProfileInfo() {
+    fun getProfileInfo() {
         getUserProfileInfo.invoke().onEach { result ->
 
             when (result) {
                 is State.Success -> {
-                    _profileState.value = ProfileState(userInfo = result.data)
+                    _profileState.value = result.data!!
+                    _baseUIState.emit(BaseUIState())
                 }
                 is State.Error -> {
-                    _profileState.value = ProfileState(
-                        error = result.message ?: "Unexpected error occurred!"
+                    _baseUIState.emit(
+                        BaseUIState(
+                            error = result.message ?: "Unexpected error occurred!"
+                        )
                     )
                 }
                 is State.Loading -> {
-                    _profileState.value = ProfileState(isLoading = true)
+                    _baseUIState.emit(BaseUIState(isLoading = true))
                 }
             }
 

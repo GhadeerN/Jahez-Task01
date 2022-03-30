@@ -1,13 +1,14 @@
 package sa.edu.tuwaiq.jaheztask01.presentation.restaurantlist
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import sa.edu.tuwaiq.jaheztask01.common.State
-import sa.edu.tuwaiq.jaheztask01.domain.model.RestaurantState
+import sa.edu.tuwaiq.jaheztask01.common.base.BaseViewModel
+import sa.edu.tuwaiq.jaheztask01.domain.model.BaseUIState
+import sa.edu.tuwaiq.jaheztask01.domain.model.RestaurantItem
 import sa.edu.tuwaiq.jaheztask01.domain.usecase.GetRestaurantsUseCase
 import javax.inject.Inject
 
@@ -16,8 +17,8 @@ private const val TAG = "RestaurantListViewModel"
 @HiltViewModel
 class RestaurantListViewModel @Inject constructor(
     private val getRestaurantsUseCase: GetRestaurantsUseCase,
-) : ViewModel() {
-    private val _restaurantsState = MutableStateFlow(RestaurantState())
+) : BaseViewModel() {
+    private val _restaurantsState = MutableStateFlow(listOf<RestaurantItem>())
     val restaurantsState = _restaurantsState.asStateFlow()
 
     init {
@@ -26,19 +27,24 @@ class RestaurantListViewModel @Inject constructor(
 
     private fun getRestaurantList() {
         viewModelScope.launch(Dispatchers.IO) {
-                getRestaurantsUseCase.invoke().onEach { result ->
-                    when(result) {
-                        is State.Success -> {
-                            _restaurantsState.value = RestaurantState(restaurants = result.data ?: emptyList())
-                        }
-                        is State.Loading -> {
-                            _restaurantsState.value = RestaurantState(isLoading = true)
-                        }
-                        is State.Error -> {
-                            _restaurantsState.value = RestaurantState(error = result.message ?: "Unexpected error occurred!")
-                        }
+            getRestaurantsUseCase.invoke().onEach { result ->
+                when (result) {
+                    is State.Success -> {
+                        _restaurantsState.value = result.data ?: emptyList()
+                        _baseUIState.emit(BaseUIState())
                     }
-                }.launchIn(viewModelScope)
+                    is State.Loading -> {
+                        _baseUIState.emit(BaseUIState(isLoading = true))
+                    }
+                    is State.Error -> {
+                        _baseUIState.emit(
+                            BaseUIState(
+                                error = result.message ?: "Unexpected error occurred!"
+                            )
+                        )
+                    }
+                }
+            }.launchIn(viewModelScope)
         }
     }
 }

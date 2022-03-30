@@ -1,18 +1,18 @@
 package sa.edu.tuwaiq.jaheztask01.presentation.login
 
 import android.util.Log
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import sa.edu.tuwaiq.jaheztask01.common.State
 import kotlinx.coroutines.launch
-import sa.edu.tuwaiq.jaheztask01.domain.model.AuthState
+import sa.edu.tuwaiq.jaheztask01.common.base.BaseViewModel
 import sa.edu.tuwaiq.jaheztask01.common.util.Constants.EMPTY_EMAIL
 import sa.edu.tuwaiq.jaheztask01.common.util.Constants.EMPTY_PASSWORD
 import sa.edu.tuwaiq.jaheztask01.common.util.Constants.INVALID_EMAIL
 import sa.edu.tuwaiq.jaheztask01.common.util.Constants.VALID_INPUTS
 import sa.edu.tuwaiq.jaheztask01.common.util.InputFieldValidation
+import sa.edu.tuwaiq.jaheztask01.domain.model.BaseUIState
 import sa.edu.tuwaiq.jaheztask01.domain.usecase.IsUserLoggedInUseCase
 import sa.edu.tuwaiq.jaheztask01.domain.usecase.LoginUseCase
 import javax.inject.Inject
@@ -23,9 +23,9 @@ private const val TAG = "LoginViewModel"
 class LoginViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
     private val isUserLoggedInUseCase: IsUserLoggedInUseCase,
-) : ViewModel() {
+) : BaseViewModel() {
     // Change the UI state via loginState
-    private val _loginState = MutableSharedFlow<AuthState>()
+    private val _loginState = MutableSharedFlow<Boolean>()
     val loginState = _loginState.asSharedFlow()
 
     // Check the input fields validity
@@ -36,15 +36,18 @@ class LoginViewModel @Inject constructor(
 
         Log.d(TAG, "inside login")
         loginUseCase(email, password).onEach { result ->
-
+            Log.d(TAG, "login result: $result")
             when (result) {
-                is State.Success -> _loginState.emit(AuthState(isSuccess = true))
-                is State.Error -> _loginState.emit(
-                    AuthState(
+                is State.Success -> {
+                    _loginState.emit(true)
+                    _baseUIState.emit(BaseUIState())
+                }
+                is State.Error -> _baseUIState.emit(
+                    BaseUIState(
                         error = result.message ?: "Unexpected error occurred!"
                     )
                 )
-                is State.Loading -> _loginState.emit(AuthState(isLoading = true))
+                is State.Loading -> _baseUIState.emit(BaseUIState(isLoading = true))
             }
 
         }.launchIn(viewModelScope)

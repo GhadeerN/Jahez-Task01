@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/all_filter"
-        android:title="@string/offers" />
+        android:title="@string/all" />
     <item
         android:id="@+id/rate_filter"
         android:title="@string/rating" />

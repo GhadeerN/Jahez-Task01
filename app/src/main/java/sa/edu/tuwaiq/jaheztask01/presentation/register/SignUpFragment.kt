@@ -5,13 +5,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import sa.edu.tuwaiq.jaheztask01.R
 import sa.edu.tuwaiq.jaheztask01.common.base.BaseFragment
 import sa.edu.tuwaiq.jaheztask01.common.util.Constants.EMPTY_CONFIRM_PASSWORD
@@ -42,6 +39,8 @@ class SignUpFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = SignUpFragmentBinding.inflate(inflater, container, false)
+        _viewModel = viewModel
+        setUIState()
         return binding.root
     }
 
@@ -95,62 +94,49 @@ class SignUpFragment : BaseFragment() {
 
 //        lifecycleScope.launch {
         collectLatestLifecycleFlow(viewLifecycleOwner, viewModel.inputState) { state ->
-                emailLayout.error = null
-                fullNameLayout.error = null
-                passwordLayout.error = null
-                confirmPassLayout.error = null
-                Log.d(TAG, "state in observe: $state")
-                state.forEach {
-                    when (it) {
-                        EMPTY_NAME -> fullNameLayout.error = getString(R.string.require)
-                        EMPTY_EMAIL -> emailLayout.error = getString(R.string.require)
-                        INVALID_EMAIL -> emailLayout.error = getString(R.string.wrong_email_format)
-                        EMPTY_PASSWORD -> passwordLayout.error = getString(R.string.require)
-                        EMPTY_CONFIRM_PASSWORD -> confirmPassLayout.error =
-                            getString(R.string.require)
-                        PASSWORDS_DONT_MATCH -> confirmPassLayout.error =
-                            getString(R.string.passwords_dont_match)
-                        INVALID_PASSWORD -> passwordLayout.error =
-                            getString(R.string.password_format)
-                        VALID_INPUTS -> {
-                            Log.d(TAG, "----------- valid fields ------------")
-                            emailLayout.error = null
-                            fullNameLayout.error = null
-                            passwordLayout.error = null
-                            confirmPassLayout.error = null
-                            viewModel.signup(
-                                name.text.toString().trim(),
-                                email.text.toString().trim(),
-                                password.text.toString().trim()
-                            )
-                        }
+            emailLayout.error = null
+            fullNameLayout.error = null
+            passwordLayout.error = null
+            confirmPassLayout.error = null
+            Log.d(TAG, "state in observe: $state")
+            state.forEach {
+                when (it) {
+                    EMPTY_NAME -> fullNameLayout.error = getString(R.string.require)
+                    EMPTY_EMAIL -> emailLayout.error = getString(R.string.require)
+                    INVALID_EMAIL -> emailLayout.error = getString(R.string.wrong_email_format)
+                    EMPTY_PASSWORD -> passwordLayout.error = getString(R.string.require)
+                    EMPTY_CONFIRM_PASSWORD -> confirmPassLayout.error =
+                        getString(R.string.require)
+                    PASSWORDS_DONT_MATCH -> confirmPassLayout.error =
+                        getString(R.string.passwords_dont_match)
+                    INVALID_PASSWORD -> passwordLayout.error =
+                        getString(R.string.password_format)
+                    VALID_INPUTS -> {
+                        Log.d(TAG, "----------- valid fields ------------")
+                        emailLayout.error = null
+                        fullNameLayout.error = null
+                        passwordLayout.error = null
+                        confirmPassLayout.error = null
+                        viewModel.signup(
+                            name.text.toString().trim(),
+                            email.text.toString().trim(),
+                            password.text.toString().trim()
+                        )
                     }
                 }
             }
+        }
     }
 
     private fun observeSignUpState() {
         collectLatestLifecycleFlow(viewLifecycleOwner, viewModel.signupState) { state ->
             Log.d(TAG, "signUp state: $state")
-            when {
-                state.isLoading -> {
-                    Log.d(TAG, "is loading")
-                    binding.signupProgressBar.visibility = View.VISIBLE
-                }
-                state.isSuccess -> {
-                    Log.d(TAG, "signup success -----")
-                    binding.signupProgressBar.visibility = View.GONE
-                    findNavController().navigate(R.id.action_signUpFragment_to_restaurantListFragment)
-                        .also {
-                            findNavController().popBackStack(R.id.signUpFragment, true)
-                        }
-                }
-                state.error.isNotBlank() -> {
-                    Log.d(TAG, "signup ERROR ----------------------")
-                    binding.signupProgressBar.visibility = View.GONE
-                    Toast.makeText(requireActivity(), state.error, Toast.LENGTH_LONG)
-                        .show()
-                }
+            if (state) {
+                Log.d(TAG, "signup success -----")
+                findNavController().navigate(R.id.action_signUpFragment_to_restaurantListFragment)
+                    .also {
+                        findNavController().popBackStack(R.id.signUpFragment, true)
+                    }
             }
         }
     }
