@@ -4,6 +4,7 @@ import android.util.Log
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.auth.ktx.userProfileChangeRequest
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
@@ -75,6 +76,28 @@ class FirebaseRepositoryImp @Inject constructor(
                 auth.currentUser!!.email!!
             )
             emit(State.Success(user))
+        } catch (e: Exception) {
+            emit(State.Error(e.message ?: "Unexpected error occurred!"))
+        }
+    }
+
+    override suspend fun updateProfile(name: String): Flow<State<Boolean>> = flow {
+        try {
+            emit(State.Loading())
+            var success = false
+            val profileUpdates = userProfileChangeRequest {
+                displayName = name
+            }
+
+            auth.currentUser!!.updateProfile(profileUpdates)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Log.d(TAG, "User profile updated.")
+                        success = true
+                    }
+                }.await()
+            if (success)
+                emit(State.Success(success))
         } catch (e: Exception) {
             emit(State.Error(e.message ?: "Unexpected error occurred!"))
         }

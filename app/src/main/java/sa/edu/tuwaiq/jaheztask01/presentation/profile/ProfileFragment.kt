@@ -5,6 +5,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -28,7 +30,7 @@ class ProfileFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = ProfileFragmentBinding.inflate(inflater, container, false)
-        _viewModel = viewModel
+        setBaseViewModel(viewModel)
         setUIState()
         return binding.root
     }
@@ -40,8 +42,11 @@ class ProfileFragment : BaseFragment() {
 
         // Collect profile UI state
         observeProfileState()
+        observeProfileUpdateState()
 
         onSignOutClicked()
+
+        onNameFieldTextWatcher()
     }
 
     private fun observeProfileState() {
@@ -49,6 +54,23 @@ class ProfileFragment : BaseFragment() {
             viewModel.profileState.collect { state ->
                 if (state.email != null) {
                     setUserInfo(state)
+                }
+            }
+        }
+    }
+
+    private fun observeProfileUpdateState() {
+        Log.d(TAG, "*** observeProfileUpdateState ***")
+        lifecycleScope.launch {
+            viewModel.updateProfileState.collect {
+                if (it) {
+                    Toast.makeText(
+                        requireActivity(),
+                        "Profile updated successfully",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    binding.updateProfileButton.isEnabled = false
+                    binding.updateProfileButton.isClickable = false
                 }
             }
         }
@@ -67,6 +89,48 @@ class ProfileFragment : BaseFragment() {
     private fun setUserInfo(user: User) {
         binding.profileFullName.setText(user.name)
         binding.profileEmail.setText(user.email)
+    }
+
+    private fun onNameFieldTextWatcher() {
+        val oldName = binding.profileFullName.text.toString()
+        binding.outlinedTextFieldName.error = null
+        Log.d(TAG, "old name: $oldName")
+        binding.profileFullName.doOnTextChanged { text, _, _, count ->
+            if (oldName != text.toString()) {
+                Log.d(TAG, "update button clickable")
+                binding.updateProfileButton.isEnabled = true
+                binding.updateProfileButton.isClickable = true
+                onUpdatedClicked()
+            } else if (count == 0) {
+                binding.updateProfileButton.isEnabled = false
+                binding.updateProfileButton.isClickable = false
+            }
+            if (text?.isBlank() == true) {
+                binding.updateProfileButton.isEnabled = false
+                binding.updateProfileButton.isClickable = false
+                binding.outlinedTextFieldName.error = "Name cannot be empty"
+            }
+        }
+
+    }
+
+    private fun onUpdatedClicked() {
+        binding.updateProfileButton.setOnClickListener {
+            Log.d(TAG, "onUpdatedClicked")
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewModel.updateProfile(binding.profileFullName.text.toString().trim())
+            }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (binding.profileFullName.text.toString().isBlank()) {
+            observeProfileState()
+            binding.outlinedTextFieldName.error = null
+            binding.updateProfileButton.isEnabled = false
+            binding.updateProfileButton.isClickable = false
+        }
     }
 
 }

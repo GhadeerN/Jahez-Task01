@@ -30,7 +30,7 @@ class RestaurantListFragment : BaseFragment() {
         setHasOptionsMenu(true)
 
         binding = RestaurantListFragmentBinding.inflate(inflater, container, false)
-        _viewModel = viewModel
+        setBaseViewModel(viewModel)
         setUIState()
         return binding.root
     }
@@ -102,7 +102,7 @@ class RestaurantListFragment : BaseFragment() {
                 restaurantListAdapter.submitList(viewModel.restaurantsState.value)
             }
             R.id.rate_filter -> {
-                restaurantListAdapter.submitList(viewModel.restaurantsState.value.sortedByDescending { it.rating })
+                restaurantListAdapter.submitList(viewModel.restaurantsState.value.sortedBy { it.rating })
             }
             R.id.distance_filter -> {
                 restaurantListAdapter.submitList(viewModel.restaurantsState.value.sortedByDescending { it.distance })

@@ -17,7 +17,7 @@ import sa.edu.tuwaiq.jaheztask01.presentation.MainActivity
 private const val TAG = "BaseFragment"
 
 open class BaseFragment : Fragment() {
-    lateinit var _viewModel: BaseViewModel
+    private lateinit var _viewModel: BaseViewModel
 
     /* This function is to fix the navController not found error. This issue is caused
     *  when an event that should call the navigation action fires multiple times in quick succession.
@@ -45,6 +45,10 @@ open class BaseFragment : Fragment() {
                 flow.collectLatest(collect)
             }
         }
+    }
+
+    protected fun setBaseViewModel(baseViewModel: BaseViewModel) {
+        _viewModel = baseViewModel
     }
 
     // Base UI States

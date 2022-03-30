@@ -39,7 +39,7 @@ class SignUpFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = SignUpFragmentBinding.inflate(inflater, container, false)
-        _viewModel = viewModel
+        setBaseViewModel(viewModel)
         setUIState()
         return binding.root
     }

@@ -38,7 +38,7 @@ class LoginFragment : BaseFragment() {
             findNavController().navigate(R.id.action_loginFragment_to_restaurantListFragment)
         }
         binding = LoginFragmentBinding.inflate(inflater, container, false)
-        _viewModel = viewModel
+        setBaseViewModel(viewModel)
         setUIState()
         return binding.root
     }

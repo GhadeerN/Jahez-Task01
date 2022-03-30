@@ -10,7 +10,6 @@ import javax.inject.Inject
 @HiltViewModel
 open class BaseViewModel @Inject constructor() : ViewModel() {
 
-    // TODO not sure!!
     protected val _baseUIState = MutableSharedFlow<BaseUIState>()
     val baseUIState = _baseUIState.asSharedFlow()
 

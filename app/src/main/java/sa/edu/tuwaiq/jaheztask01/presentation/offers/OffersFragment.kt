@@ -25,7 +25,7 @@ class OffersFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentOffersBinding.inflate(inflater, container, false)
-        _viewModel = viewModel
+        setBaseViewModel(viewModel)
         setUIState()
         return binding.root
     }

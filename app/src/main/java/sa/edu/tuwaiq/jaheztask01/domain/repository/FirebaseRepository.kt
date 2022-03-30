@@ -17,4 +17,6 @@ interface FirebaseRepository {
     fun signOut()
 
     fun getUserProfile(): Flow<State<User>>
+
+    suspend fun updateProfile(name: String): Flow<State<Boolean>>
 }

@@ -15,6 +15,7 @@
         android:padding="20dp">
 
         <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -87,12 +88,12 @@
             android:id="@+id/update_profile_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:text="Button"
-            android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@+id/button"
+            android:layout_marginBottom="6dp"
+            android:enabled="false"
+            android:text="@string/update"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@+id/sign_out_button"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.6"
             app:layout_constraintStart_toStartOf="parent" />
 
 
