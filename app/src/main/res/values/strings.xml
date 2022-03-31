@@ -1,3 +1,28 @@
 <resources>
     <string name="app_name">Jahez Task01</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="question_dont_have_account">Don\'t Have Account?</string>
+    <string name="signup">Sign Up</string>
+    <string name="require">Require</string>
+    <string name="wrong_email_format">Wrong email format! e.g., plant@hungry.com</string>
+    <string name="register_full_name">Full Name</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="question_already_have_account">Already Have Account?</string>
+    <string name="offer_placeholder">9 SAR Delivery</string>
+    <string name="restaurant_logo_image">Restaurant logo image</string>
+    <string name="password_format">Password most contains:\n- At least 8 characters\n- At least one uppercase and lowercase letter\n- At least one number digit</string>
+    <string name="passwords_dont_match">Confirm password does not match password field</string>
+    <string name="rating">Rating</string>
+    <string name="distance">Distance</string>
+    <string name="all">All</string>
+    <string name="offers">Offers</string>
+    <string name="search">Search</string>
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
+    <string name="name">Name</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="update">Update</string>
 </resources>
