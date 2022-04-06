@@ -8,6 +8,8 @@ import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import sa.edu.tuwaiq.jaheztask01.common.util.Constants
+import sa.edu.tuwaiq.jaheztask01.common.util.DefaultDispatchers
+import sa.edu.tuwaiq.jaheztask01.common.util.DispatcherProvider
 import sa.edu.tuwaiq.jaheztask01.common.util.InputFieldValidation
 import sa.edu.tuwaiq.jaheztask01.data.datasource.remote.RestaurantApi
 import sa.edu.tuwaiq.jaheztask01.data.repositoryimp.FirebaseRepositoryImp
@@ -46,4 +48,9 @@ class AppModule {
     ): RestaurantRepository {
         return RestaurantRepositoryImp(restaurantApi)
     }
+
+    // Dispatcher provider
+    @Singleton
+    @Provides
+    fun provideDispatcherProvider(): DispatcherProvider = DefaultDispatchers()
 }
