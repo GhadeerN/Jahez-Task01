@@ -40,6 +40,7 @@ class RestaurantListFragment : BaseFragment() {
 
         restaurantListAdapter = RestaurantListAdapter()
         binding.resturantsRecyclerView.adapter = restaurantListAdapter
+        viewModel.getRestaurantList()
         getRestaurantList()
     }
 
